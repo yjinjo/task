@@ -8,6 +8,7 @@ from django.views.generic import (
     ListView,
     DetailView,
     UpdateView,
+    DeleteView,
 )
 
 from taskapp.models import Task, ChecklistItem
@@ -90,3 +91,20 @@ class ChecklistUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse("view-task", kwargs={"task_id": str(self.kwargs["task_id"])})
+
+
+class ChecklistDeleteView(DeleteView):
+    model = ChecklistItem
+    pk_url_kwarg = "check_id"
+    template_name = "pages/checklist_delete.html"
+    success_url = "/task/"
+
+    def get_success_url(self):
+        return reverse("view-task", kwargs={"task_id": str(self.kwargs["task_id"])})
+
+
+class TaskDeleteView(DeleteView):
+    model = Task
+    pk_url_kwarg = "task_id"
+    template_name = "pages/task_delete.html"
+    success_url = "/"

@@ -51,6 +51,13 @@
                             {% endif %}
                         </td>
                         <td class="align-middle">{{ check.content }}</td>
+                        <td style="width: 20px">
+                            <a href="{% url 'delete-item' object.id check.id %}">
+                                <button class="btn btn-link">
+                                    <i class="bi bi-x-square"></i>
+                                </button>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
             {% else %}

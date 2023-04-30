@@ -10,6 +10,8 @@ from taskapp.views import (
     TaskDetailView,
     ChecklistCreateView,
     ChecklistUpdateView,
+    TaskDeleteView,
+    ChecklistDeleteView,
 )
 
 urlpatterns = [
@@ -23,9 +25,11 @@ urlpatterns = [
         ChecklistUpdateView.as_view(),
         name="check-item",
     ),
-    path("task/<int:task_id>/delete/", views.index, name="delete-task"),
+    path("task/<int:task_id>/delete/", TaskDeleteView.as_view(), name="delete-task"),
     path(
-        "task/<int:task_id>/item/<int:check_id>/delete", views.index, name="delete-item"
+        "task/<int:task_id>/item/<int:check_id>/delete",
+        ChecklistDeleteView.as_view(),
+        name="delete-item",
     ),
     path("task/<int:task_id>/", views.index, name="view-task"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
