@@ -6,10 +6,10 @@ from django.views.generic import (
     TemplateView,
     CreateView,
     ListView,
-    DetailView,
     UpdateView,
     DeleteView,
 )
+from django.views.generic.detail import SingleObjectMixin
 
 from taskapp.models import Task, ChecklistItem
 
@@ -47,16 +47,17 @@ class TaskPreviousListView(ListView):
     paginate_by = 4
 
 
-class TaskDetailView(DetailView):
-    model = Task
+class TaskDetailView(SingleObjectMixin, ListView):
     template_name = "pages/task_detail.html"
     pk_url_kwarg = "task_id"
+    paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["checklists"] = ChecklistItem.objects.filter(task=self.object).all()
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=Task.objects.all())
+        return super().get(request, *args, **kwargs)
 
-        return context
+    def get_queryset(self):
+        return ChecklistItem.objects.filter(task=self.object).all()
 
 
 class ChecklistCreateView(CreateView):
