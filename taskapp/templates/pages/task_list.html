@@ -13,6 +13,11 @@
                             <span class="badge bg-light text-dark">{{ item.due|date:'Y년 m월 d일 H시 1분' }}까지</span>
                         </p>
                     </div>
+                    <div class="card-footer">
+                        <a href="{% url 'view-task' item.id %}">
+                            <button class="btn btn-dark float-right">보기</button>
+                        </a>
+                    </div>
                 </div>
             </div>
         {% endfor %}

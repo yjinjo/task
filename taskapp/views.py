@@ -1,9 +1,9 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.utils import timezone
-from django.views.generic import TemplateView, CreateView, ListView
+from django.views.generic import TemplateView, CreateView, ListView, DetailView
 
-from taskapp.models import Task
+from taskapp.models import Task, ChecklistItem
 
 
 def index(request):
@@ -37,3 +37,15 @@ class TaskPreviousListView(ListView):
     template_name = "pages/task_previous_list.html"
     queryset = Task.objects.filter(due__lt=timezone.now()).order_by("-due")
     paginate_by = 4
+
+
+class TaskDetailView(DetailView):
+    model = Task
+    template_name = "pages/task_detail.html"
+    pk_url_kwarg = "task_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["checklists"] = ChecklistItem.objects.filter(task=self.object)
+
+        return context
