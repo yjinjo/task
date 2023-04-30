@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic import TemplateView, CreateView, ListView
@@ -15,8 +16,11 @@ class TaskListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         tasks = Task.objects.filter(due__gte=timezone.now()).order_by("-due")
+        paginator = Paginator(tasks, 4)
+        page_number = self.request.GET.get("page", "1")
+        paging = paginator.get_page(page_number)
 
-        return {"tasks": tasks}
+        return {"paging": paging}
 
 
 class TaskCreateView(CreateView):
@@ -32,3 +36,4 @@ class TaskPreviousListView(ListView):
     model = Task
     template_name = "pages/task_previous_list.html"
     queryset = Task.objects.filter(due__lt=timezone.now()).order_by("-due")
+    paginate_by = 4
