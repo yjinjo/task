@@ -8,6 +8,7 @@ authors = ["yjinjo <yjinjo@berkeley.edu>"]
 python = "^3.11"
 Django = "^4.2"
 python-dotenv = "1.0"
+crispy-bootstrap5 = "^0.7"
 
 [tool.poetry.dev-dependencies]
 
